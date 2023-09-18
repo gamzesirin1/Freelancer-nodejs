@@ -10,11 +10,13 @@ const db = require('./config/db');
 const photoContollers = require('./controllers/PhotoControllers');
 const pageContollers = require('./controllers/PageControllers');
 dotenv.config();
+
 // Middleware
 const myLogger = (req, res, next) => {
 	console.log('Middleware Log 1')
 	next()
 }
+
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }));
@@ -23,23 +25,17 @@ app.use(fileUpload());
 app.use(methodOverride('_method', {
   methods: ['POST', 'GET'],
 }));
+
 app.use(myLogger)
 // Routes
-
-
 app.get('/', photoContollers.getAllPhotos);
 app.get('/photos/:id', photoContollers.getPhoto);
 app.post('/photos', photoContollers.createPhoto);
 app.put('/photos/:id', photoContollers.updatePhoto);
 app.get('/photos/delete/:id', photoContollers.deletePhoto);
-
-
-
-app.get('/',pageContollers.getIndexPage)
+// app.get('/photos/edit/:id', pageControllers.getEditPage);
+// app.get('/',pageContollers.getIndexPage)
 app.get('/add', pageContollers.getAddPage)
-app.get('/edit', pageContollers.getEditPage)
-
-
 
 
 const PORT = process.env.PORT || 5000;

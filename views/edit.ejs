@@ -14,10 +14,11 @@
 		<div class="row justify-content-center">
 			<div class="col-lg-8 col-xl-7">
 			
-				<form id="contactForm" data-sb-form-api-token="API_TOKEN">
+				<form id="contactForm" data-sb-form-api-token="API_TOKEN"  method="POST" action="/photos/<%= photo._id %>?_method=PUT" class="tm-contact-form" encType="multipart/form-data">
 					<!-- Name input-->
 					<div class="form-floating mb-3">
 						<input
+						value="<%=photo.title%>"
 							class="form-control"
 							id="name"
 							type="text"
@@ -36,17 +37,13 @@
 							placeholder="Enter your project description here..."
 							style="height: 10rem"
 							data-sb-validations="required"
-						></textarea>
+						><%=photo.description%></textarea>
 						<label for="message">Project Description</label>
 						
 					</div>
 					<div class="form-group">
 						<input type="file" name="image" class="form-control-image rounded-0 text-center text-danger mb-3" >
 					  </div>
-					  
-			
-					
-				
 					<!-- Submit Button-->
 					<button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit"> Project Update</button>
 				</form>
