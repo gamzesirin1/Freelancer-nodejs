@@ -6,6 +6,9 @@ const esj = require('ejs')
 const app = express()
 const dotenv = require('dotenv');
 const db = require('./config/db');
+
+const photoContollers = require('./controllers/PhotoControllers');
+const pageContollers = require('./controllers/PageControllers');
 dotenv.config();
 // Middleware
 const myLogger = (req, res, next) => {
@@ -14,16 +17,31 @@ const myLogger = (req, res, next) => {
 }
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(fileUpload());
+app.use(methodOverride('_method', {
+  methods: ['POST', 'GET'],
+}));
+app.use(myLogger)
+// Routes
 
-app.get('/', (req, res) => {
-	res.status(200).render('index')
-})
-app.get('/add', (req, res) => {
-	res.status(200).render('add')
-})
-app.get('/edit', (req, res) => {
-	res.status(200).render('edit')
-})
+
+app.get('/', photoContollers.getAllPhotos);
+app.get('/photos/:id', photoContollers.getPhoto);
+app.post('/photos', photoContollers.createPhoto);
+app.put('/photos/:id', photoContollers.updatePhoto);
+app.get('/photos/delete/:id', photoContollers.deletePhoto);
+
+
+
+app.get('/',pageContollers.getIndexPage)
+app.get('/add', pageContollers.getAddPage)
+app.get('/edit', pageContollers.getEditPage)
+
+
+
+
 const PORT = process.env.PORT || 5000;
 
 db();
